@@ -2,6 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const bodyParse = require('body-parser');
 const connectDB = require('./config/db');
+const { route } = require('./routes/routes');
+const router = require('./routes/routes');
 require('dotenv').config();
 
 const app = express();
@@ -12,14 +14,12 @@ app.use(bodyParse.json());
 //database connect code
 connectDB();
 
-app.get('/user', (req, res) =>{
-    console.log('api done', req.body)
-    return res.send({
-        'status': 200,
-        'data': "api is working"
-    });
-});
+const allRoutes = require('./routes/routes');
+app.use('/api', allRoutes);
 
-app.listen(5000, () =>{
+
+const PORT = process.env.PORT || 5500
+
+app.listen(PORT, () =>{
     console.log("server is running")
 });

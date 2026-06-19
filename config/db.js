@@ -10,6 +10,5 @@ const connectDB = async() =>{
     }
 }
 
-
 //exporting database connect function
 module.exports = connectDB;
