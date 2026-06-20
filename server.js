@@ -14,6 +14,7 @@ app.use(bodyParse.json());
 //database connect code
 connectDB();
 
+//route section
 const allRoutes = require('./routes/routes');
 app.use('/api', allRoutes);
 

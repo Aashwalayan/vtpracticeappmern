@@ -1,10 +1,17 @@
 const user = require('../models/user')
 
-const UserCOntroller = {
+const UserController = {
     createUser: async(req, res) =>{
         
         try{
             const {name, age, email} = req.body;
+            if (!name || !age || !email){
+                return res.status(400).json({
+                    status: 400,
+                    message: "field empty",
+                    data: null
+                })
+            }
             const newUser = await user.create({name, age, email});
 
             return res.status(201).json({
@@ -20,7 +27,26 @@ const UserCOntroller = {
             });
         }
         
-    }
+    },
+
+    getUser: async(req, res) => {
+        try{
+            const users = await user.find();
+
+            return res.status(200).json({
+                status: 200,
+                message: "users fetched succesfully",
+                data:users
+            });
+        }catch(error){
+            return res.status(500).json({
+                status: 500,
+                message: error,
+                data: null
+            });
+        }
+    },
+
 }
 
-module.exports = UserCOntroller;
+module.exports = UserController;
