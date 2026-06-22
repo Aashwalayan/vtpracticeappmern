@@ -10,6 +10,8 @@ router.get('/getUser', UserController.getUser)
 
 router.get('/users/:id', UserController.getUserById)
 
+router.put('/users/:id', UserController.updateUser)
+
 //user route ends
 
 module.exports = router;

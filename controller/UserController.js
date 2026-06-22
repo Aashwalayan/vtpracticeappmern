@@ -50,8 +50,9 @@ const UserController = {
     getUserById: async(req, res) => {
         
         try{
-            const _id = req.params.id;
-            const singleUserData = await user.findById(_id);
+            const id = req.params.id;
+            const singleUserData = await user.findById(id);
+
             console.log(singleUserData);
 
             return res.status(200).json({
@@ -67,6 +68,29 @@ const UserController = {
             })
         }
     },
+
+    updateUser: async(req, res) => {
+        try{
+            const id = req.params.id;
+            const {name, age, email} = req.body;
+
+            const updatedUserData = await user.findByIdAndUpdate(id, {name, age, email}, {new: true});
+            console.log(updatedUserData);
+
+            return res.status(201).json({
+                status: 201,
+                message: "Single user data updated",
+                data: updatedUserData
+            })
+
+        }catch(error){
+            return res.status(400).json({
+                status: 400,
+                message: error,
+                data: null
+            })
+        }
+    }
 }
 
 module.exports = UserController;
