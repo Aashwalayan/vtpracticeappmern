@@ -47,6 +47,26 @@ const UserController = {
         }
     },
 
+    getUserById: async(req, res) => {
+        
+        try{
+            const _id = req.params.id;
+            const singleUserData = await user.findById(_id);
+            console.log(singleUserData);
+
+            return res.status(200).json({
+                status: 200,
+                message: "Single user data fetched",
+                data: singleUserData
+            })
+        }catch(error){
+            return res.status(400).json({
+                status: 400,
+                message: error,
+                data: null
+            })
+        }
+    },
 }
 
 module.exports = UserController;
