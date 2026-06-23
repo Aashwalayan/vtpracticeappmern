@@ -90,7 +90,31 @@ const UserController = {
                 data: null
             })
         }
+    },
+
+    deleteUser: async(req, res) => {
+        try{
+            const id = req.params.id;
+            const {name, age, email} = req.body;
+
+            const deletedUserData = await user.findByIdAndDelete(id, {name, age, email}, {new: true});
+            console.log(deletedUserData);
+
+            return res.status(201).json({
+                status: 201,
+                message: "Single user data deleted",
+                data: deletedUserData
+            })
+
+        }catch(error){
+            return res.status(400).json({
+                status: 400,
+                message: error,
+                data: null
+            })
+        }
     }
+    
 }
 
 module.exports = UserController;
