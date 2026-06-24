@@ -95,13 +95,12 @@ const UserController = {
     deleteUser: async(req, res) => {
         try{
             const id = req.params.id;
-            const {name, age, email} = req.body;
 
-            const deletedUserData = await user.findByIdAndDelete(id, {name, age, email}, {new: true});
+            const deletedUserData = await user.findByIdAndDelete(id);
             console.log(deletedUserData);
 
-            return res.status(201).json({
-                status: 201,
+            return res.status(200).json({
+                status: 200,
                 message: "Single user data deleted",
                 data: deletedUserData
             })
