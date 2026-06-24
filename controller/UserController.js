@@ -4,15 +4,15 @@ const UserController = {
     createUser: async(req, res) =>{
         
         try{
-            const {name, age, email} = req.body;
-            if (!name || !age || !email){
+            const {name, age, email, password} = req.body;
+            if (!name || !age || !email || !password){
                 return res.status(400).json({
                     status: 400,
                     message: "field empty",
                     data: null
                 })
             }
-            const newUser = await user.create({name, age, email});
+            const newUser = await user.create({name, age, email, password});
 
             return res.status(201).json({
             status: 201,
@@ -72,9 +72,9 @@ const UserController = {
     updateUser: async(req, res) => {
         try{
             const id = req.params.id;
-            const {name, age, email} = req.body;
+            const {name, age, email, password} = req.body;
 
-            const updatedUserData = await user.findByIdAndUpdate(id, {name, age, email}, {new: true});
+            const updatedUserData = await user.findByIdAndUpdate(id, {name, age, email, password}, {new: true});
             console.log(updatedUserData);
 
             return res.status(201).json({
@@ -104,6 +104,64 @@ const UserController = {
                 message: "Single user data deleted",
                 data: deletedUserData
             })
+
+        }catch(error){
+            return res.status(400).json({
+                status: 400,
+                message: error,
+                data: null
+            })
+        }
+    },
+
+    loginUser: async (req, res) =>{
+        try{
+            const {email, password} = req.body;
+            console.log(req.body)
+
+            if (!email || !password){
+                return res.status(400).json({
+                    status: 400,
+                    message: "email or password not filled",
+                    data: null
+                })
+            }
+
+            const emailCheck = await user.findOne({email})
+            console.log(emailCheck)
+            if (!emailCheck){
+                return res.status(400).json({
+                    status: 400,
+                    message: "Email not filled",
+                    data: null
+                })
+            }
+
+            if (emailCheck.password !== password){
+                
+                return res.status(400).json({
+                    status: 400,
+                    message: "Password Doesn't Match",
+                    data: null
+                })
+            }
+
+            const tokenData = jwt.sign(
+                {id:emailCheck.id, email:emailCheck.email},
+                process.env.JWT_TOKEN,
+                { expiresIn: '7d'}
+            );
+
+            return res.status(200).json({
+                status: 200,
+                message: 'user data get succesfully',
+                data:{
+                    name: emailCheck.name,
+                    email: emailCheck.email,
+                    age: emailCheck.age,
+                }
+            })
+
 
         }catch(error){
             return res.status(400).json({
