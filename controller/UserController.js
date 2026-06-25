@@ -1,4 +1,5 @@
 const user = require('../models/user')
+const jwt = require('jsonwebtoken')
 
 const UserController = {
     createUser: async(req, res) =>{
@@ -117,7 +118,6 @@ const UserController = {
     loginUser: async (req, res) =>{
         try{
             const {email, password} = req.body;
-            console.log(req.body)
 
             if (!email || !password){
                 return res.status(400).json({
@@ -128,7 +128,7 @@ const UserController = {
             }
 
             const emailCheck = await user.findOne({email})
-            console.log(emailCheck)
+
             if (!emailCheck){
                 return res.status(400).json({
                     status: 400,
@@ -170,7 +170,7 @@ const UserController = {
                 data: null
             })
         }
-    }
+    },
     
 }
 
