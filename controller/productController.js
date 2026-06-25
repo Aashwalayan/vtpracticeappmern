@@ -68,6 +68,46 @@ const productController = {
             })
         }
     },
+
+    removeProduct: async(req, res) => {
+        try{
+            const id = req.params.id;
+            await product.findByIdAndDelete(id);
+            const allProduct = await product.find()
+            return res.status(200).json({
+                status: 200,
+                message: "Product Removed Succesfully",
+                data: allProduct
+            })
+        }catch(error){
+            return res.status(400).json({
+                status: 400,
+                message: error,
+                data: null
+            })
+        }
+    },
+
+    updateProduct: async (req, res) => {
+        try{
+            const id = req.params.id;
+            const {name, productDescription, salePrice, costPrice} = req.body;
+
+            const updatedProduct = await product.findByIdAndUpdate(id, {name, productDescription, salePrice, costPrice}, {new: true});
+
+            return res.status(201).json({
+                status: 201,
+                message: "Product updated succesfully",
+                data: updatedProduct
+            })
+        }catch(error){
+            return res.status(400).json({
+                status: 400,
+                message: error,
+                data: null
+            })
+        }
+    }
     
 }
 

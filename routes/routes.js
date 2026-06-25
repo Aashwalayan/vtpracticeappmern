@@ -25,6 +25,12 @@ router.get('/getProducts', productController.getProducts)
 
 router.get('/getProducts/:id', productController.getProuctById)
 
+router.delete('/removeProduct/:id', productController.removeProduct)
+
+router.put('/updateProduct/:id', productController.updateProduct)
+
+router.patch('/updateProduct/:id', productController.updateProduct)
+
 //user route ends
 
 module.exports = router;
